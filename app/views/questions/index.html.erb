@@ -1,0 +1,45 @@
+<% unless flash.blank? %>
+  <div class="row">
+    <div class="col-xs-4 col-xs-offset-4">
+      <div class="mensajes">
+        <%= render partial: 'layouts/messages', flash: flash %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="row" id="questions">
+    <ul class="nav nav-tabs ">
+        <li><h3>Top Questions</h3></li>
+
+        <li class="<%= params[:tab].present? ? params[:tab] == "new" ? "active right-to-left" : "right-to-left" : "active right-to-left" %>"><%= link_to "Featured", questions_path(tab:"new") %></li>
+        <li class="<%=  params[:tab] == "vote" ? "active right-to-left" : "right-to-left" %>"><%= link_to "Hot", questions_path(tab:"vote") %></li>
+        <li class="<%=  params[:tab] == "actives" ? "active right-to-left" : "right-to-left" %>"><%= link_to "Interesting", questions_path(tab:"actives") %></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <% @questions.each do |question| %>
+                <div class="col-xs-12" id="question-body">
+                    <div class="col-xs-1">
+                        <h3 class="text-center"><%= question.votes.count - question.unvotes.count %></h3>
+                        <p class="text-center">Votes</p>
+                    </div>
+                    <div class="col-xs-1">
+                        <h3 class="text-center"><%= question.answers.count %></h3>
+                        <p class="text-center">Answer</p>
+                    </div>
+                    <div class="col-xs-1">
+                        <h3 class="text-center"> <%= question.views %> </h3>
+                        <p class="text-center">Views</p>
+                    </div>
+                    <div class="col-xs-9" id="principal">
+                        <h4><%= link_to question.title, question, class:"title" %></h4>
+                        <p class="text-right">  <%= time_ago_in_words(question.created_at) %></p>
+                        <p class="text-right">  <%= question.user.name %></p>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
